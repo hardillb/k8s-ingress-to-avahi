@@ -69,35 +69,40 @@ function main() {
 	    //console.log('Event: ', JSON.stringify(obj, null ,2))
 	    if (obj.type == "ADDED") {
 	    	for (x in obj.object.spec.rules) {
-	    		var host = obj.object.spec.rules[x].host
+	    		const host = obj.object.spec.rules[x].host
 	    		console.log("Adding: ", host)
-	    		
-	    		let entryGroupPath = await server.EntryGroupNew()
-	    		let entryGroup = await bus.getProxyObject('org.freedesktop.Avahi',  entryGroupPath)
-	    		let entryGroupInt = entryGroup.getInterface('org.freedesktop.Avahi.EntryGroup')
 
-				var interface = -1
-				var protocol = -1
-				var flags = 0
-				var name = host
-				var clazz = 0x01
-				var type = 0x05
-				var ttl = 60
-				var rdata = encodeFQDN(hostname)
+	    		if (!cnames[host]) {
+		    		let entryGroupPath = await server.EntryGroupNew()
+		    		let entryGroup = await bus.getProxyObject('org.freedesktop.Avahi',  entryGroupPath)
+		    		let entryGroupInt = entryGroup.getInterface('org.freedesktop.Avahi.EntryGroup')
 
-				entryGroupInt.AddRecord(interface, protocol, flags, name, clazz, type, ttl, rdata)
+					var interface = -1
+					var protocol = -1
+					var flags = 0
+					var name = host
+					var clazz = 0x01
+					var type = 0x05
+					var ttl = 60
+					var rdata = encodeFQDN(hostname)
 
-				entryGroupInt.Commit()
-				.then(()=>{
-					cnames[host] = entryGroupInt
-				})
+					entryGroupInt.AddRecord(interface, protocol, flags, name, clazz, type, ttl, rdata)
+
+					entryGroupInt.Commit()
+					.then(()=>{
+						cnames[host] = entryGroupInt
+					})
+				}
 	    	}
 	    } else if (obj.type == "DELETED") {
 	    	for (x in obj.object.spec.rules) {
 	    		console.log("Removing: ", obj.object.spec.rules[x].host)
-	    		cnames[obj.object.spec.rules[x].host].Reset()
-	    		cnames[obj.object.spec.rules[x].host].Free()
-	    		delete cnames[obj.object.spec.rules[x].host]
+	    		const host = obj.object.spec.rules[x].host
+	    		if (cname[host]) {
+		    		cnames[obj.object.spec.rules[x].host].Reset()
+		    		cnames[obj.object.spec.rules[x].host].Free()
+		    		delete cnames[obj.object.spec.rules[x].host]
+		    	}
 	    	}
 	    }
 		// console.log(cnames);
