@@ -1,4 +1,4 @@
-# k8s-ingree-to-avahi
+# k8s-ingress-to-avahi
 
 A quick and dirty hack to turn Ingress hostnames into mDNS CNAME entries
 
