@@ -26,6 +26,26 @@ The script take 2 arguments
  $ node index.js /home/ubuntu/.kube/config ubuntu.local
  ```
 
+The Ingree YAML should look something like this:
+
+```
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: manager-ingress
+spec:
+  rules:
+  - host: "manager.ubuntu.local"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: manager
+            port:
+              number: 3000 
+```
 
 
 ## No HTTPS support
