@@ -2,7 +2,18 @@
 
 A quick and dirty hack to turn Ingress hostnames into mDNS CNAME entries
 
+## Install
+
+```
+$ git clone https://github.com/hardillb/k8s-ingress-to-avahi.git
+$ cd k8s-ingress-to-avahi
+$ npm install
+```
+
 ## Running
+
+This runs on the Ingress Host machine outside of Kubernetes (might be able to get it to work in a container,
+but will need the DBUS socket mounting into the container)
 
 The script take 2 arguments
 
@@ -19,5 +30,5 @@ The script take 2 arguments
 
 ## No HTTPS support
 
-Might add this later, but would require custom Certificate Authority to 
+Might add this later, but it would require custom Certificate Authority to 
 issue certs for `.local` domain.
