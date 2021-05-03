@@ -15,15 +15,22 @@ $ npm install
 This runs on the Ingress Host machine outside of Kubernetes (might be able to get it to work in a container,
 but will need the DBUS socket mounting into the container)
 
-The script take 2 arguments
+The script take 3 arguments
 
  - The path to the kubctl config file
  - The mDNS hostname of the Ingress machine
+ - Optional namespace to watch (uses default if not present)
 
  e.g.
 
  ```
  $ node index.js /home/ubuntu/.kube/config ubuntu.local
+ ```
+ 
+ or
+
+ ```
+ $ node index.js /home/ubuntu/.kube/config ubuntu.local foo
  ```
 
 The Ingress YAML should look something like this:

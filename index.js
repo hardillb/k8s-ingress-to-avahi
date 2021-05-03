@@ -15,6 +15,7 @@ const dbus = require('dbus-next');
 const bus = dbus.systemBus()
 
 const hostname = process.argv[3]
+const namespace = process.argv[4] || "default"
 
 const cnames = {}
 
@@ -61,7 +62,7 @@ function main() {
 		server = obj.getInterface('org.freedesktop.Avahi.Server')
 	})
 
-	const stream = client.apis.extensions.v1beta1.namespaces("default").ingresses.getStream({qs:{ watch: true}})
+	const stream = client.apis.extensions.v1beta1.namespaces(namespace).ingresses.getStream({qs:{ watch: true}})
 
 	const jsonStream = new JSONStream()
 	stream.pipe(jsonStream)
